@@ -1,184 +1,145 @@
-# 💻 The Terminal Cheat Sheet Every Developer Needs Right Now
+# 🕸️ The Terminal Knowledge Graph
 
-### Because AI agents live in your terminal — and so should you
+### Every command is a node. Learn how they connect, and the terminal stops being a black box.
 
-AI coding agents (Claude Code, Codex, Cursor, etc.) spend most of their time in one place: the terminal. They navigate your repo, run your tests, install your dependencies, and fire off git commands — all from the command line.
+I'm done calling these "cheat sheets." Cheating means skipping past the understanding, and that's the opposite of what this is. Think of it as a graph instead: a web of connected ideas where `pwd` leads you to paths, paths lead you to processes, processes lead you to permissions, and permissions are what stop you from doing something you'll regret at 1am.
 
-Which means the less you know about the terminal, the harder it is to tell whether an agent just did something brilliant or something dangerous.
+Building with an AI agent in the driver's seat is genuinely fun. It's fast, it feels a little like magic, and sooner or later it's going to try to run a command you don't fully understand. None of that is a problem. The fun and the "know what you're doing" part work together, not against each other. The second one is what makes the first one safe.
 
-This is my running cheat sheet of what I think every developer — especially one working alongside AI agents — should have down cold.
+Below is my current map of that graph, the nodes I think every developer should have wired in before handing an agent the keyboard.
 
 ---
 
-## 1. Getting Around the File System
+## Node 1: Knowing Where You Are
 
-The absolute basics.
+Everything else in this graph depends on this one. If you don't know your current location, you can't reason about what a command is actually about to touch.
 
 | Command | What it does |
 | --- | --- |
-| `pwd` | Print where you currently are |
+| `pwd` | Print your current location |
 | `ls` | List what's in the current folder |
 | `ls -la` | List everything, hidden files included |
 | `cd folder` | Step into a folder |
-| `cd ..` | Step back up one level |
-| `cd ~` | Jump straight home |
-| `cd -` | Bounce back to your last folder |
-| `clear` | Wipe the screen |
+| `cd ..` | Step up one level |
+| `cd ~` | Jump home |
+| `cd -` | Return to wherever you just came from |
+| `clear` | Clear the screen, not your history |
 
-### 🔑 Concept: Paths
+### The path node
 
-Know the difference between **relative** and **absolute** paths.
+Paths are how every other node here connects back to this one, and they come in two flavors.
 
-`./src/app.js` — relative to wherever you're standing.
+`./src/app.js` is relative. It means "starting from wherever I'm standing right now."
 
-`/Users/you/project/src/app.js` — the full, unambiguous location.
+`/Users/you/project/src/app.js` is absolute. It means "this exact spot, regardless of where you started."
 
-Shorthand you'll see everywhere:
-
-`.` → here
-
-`..` → one level up
-
-`~` → home
-
-`/` → the root of everything
+Shorthand worth memorizing: `.` is here, `..` is one level up, `~` is home, `/` is the root everything else branches from.
 
 ---
 
-## 2. Handling Files
+## Node 2: Making, Moving, and Deleting Files
 
 | Command | What it does |
 | --- | --- |
 | `touch file.txt` | Create an empty file |
 | `mkdir folder` | Create a folder |
-| `mkdir -p a/b/c` | Create a whole nested folder path at once |
-| `cp file copy.txt` | Duplicate a file |
-| `cp -r folder copy` | Duplicate a folder |
+| `mkdir -p a/b/c` | Create a nested path in one go |
+| `cp file copy.txt` | Copy a file |
+| `cp -r folder copy` | Copy a folder |
 | `mv old.txt new.txt` | Move or rename |
 | `rm file.txt` | Delete a file |
 | `rm -r folder` | Delete a folder |
-| `cat file.txt` | Dump a file's contents to screen |
-| `less file.txt` | Page through a file |
+| `cat file.txt` | Print a file's contents |
+| `less file.txt` | Page through a file one screen at a time |
 
-### ⚠️ Respect `rm`
+### The one edge that doesn't reverse
 
-There's no recycle bin here. What you delete from the terminal is usually gone.
-
-`rm -rf` especially — know exactly what you're pointing it at before you hit enter.
+Almost everything in this graph can be undone if you're paying attention. This is the exception. There's no trash bin catching `rm -rf` if it lands on the wrong folder. Check the path twice before you check the command.
 
 ---
 
-## 3. Finding Things
-
-Sooner or later you'll need to hunt down a file or a string of code.
+## Node 3: Search, or How to Find a Needle Without Reading the Whole Haystack
 
 | Command | What it does |
 | --- | --- |
 | `find . -name "*.js"` | Find files matching a pattern |
 | `grep "TODO" file.txt` | Search inside one file |
-| `grep -R "TODO" .` | Search every file, recursively |
-| `rg "TODO"` | Same idea, but fast — ripgrep |
+| `grep -R "TODO" .` | Search everything, recursively |
+| `rg "TODO"` | The same search, much faster (ripgrep) |
 | `which node` | Find out where a command actually lives |
 
-If you're working in a large codebase, `rg` (ripgrep) will save you real time over plain `grep`.
+Once a codebase has more than a few hundred files, `rg` starts pulling ahead of plain `grep`. Worth having installed from day one.
 
 ---
 
-## 4. Pipes & Redirection
+## Node 4: Pipes and Redirection, the Edges That Tie It All Together
 
-This is where the terminal stops being a list of commands and starts being a toolkit.
+This is the node that turns a pile of separate commands into an actual graph. Pipes and redirects are the connective tissue.
 
-### Pipes
-
-`|` feeds the output of one command straight into the next.
+### Pipes: one command's output feeds the next command's input
 
 `ls -la | grep ".json"`
 
-Mental model: **command → output → next command.**
+Read it left to right: command, then output, then the next command. You get to chain small, focused tools together instead of relying on one tool that tries to do everything.
 
-Instead of one giant tool that does everything, you chain small tools that each do one thing well.
+### Redirection: output lands in a file instead of on screen
 
-### Redirecting output
+`echo "hello" > file.txt` writes to the file (and overwrites whatever was there).
 
-`>` sends output into a file (overwriting it).
-
-`echo "hello" > file.txt`
-
-`>>` does the same, but appends.
-
-`echo "another line" >> file.txt`
+`echo "another line" >> file.txt` appends instead of overwriting.
 
 ---
 
-## 5. Git
+## Node 5: Git, the Version Graph You Already Understand
 
-Even if you mostly click around Git in your IDE, these need to be second nature.
+If you've ever clicked around Git inside an IDE, you already get the concept. These are just the commands sitting underneath those clicks.
 
 | Command | What it does |
 | --- | --- |
 | `git status` | See what's changed |
-| `git diff` | Look at the actual changes |
+| `git diff` | See the actual line-by-line changes |
 | `git add .` | Stage changes |
-| `git commit -m "message"` | Commit staged changes |
+| `git commit -m "message"` | Commit what's staged |
 | `git log` | Browse commit history |
 | `git branch` | List branches |
-| `git switch branch` | Switch to a branch |
+| `git switch branch` | Switch branches |
 | `git pull` | Pull down remote changes |
 | `git push` | Push your commits |
 | `git restore file` | Undo local changes to a file |
 
-### 🔑 Concept: Never trust, always verify
+### The guardrail node
 
-When an AI agent touches your repo, these two commands are your seatbelt:
-
-`git status` and `git diff`
-
-Run them. Every time. They tell you exactly what actually changed before you commit to it.
+If an agent has write access to your repo, this habit isn't optional. Run `git status` and `git diff` before anything gets committed, every single time. Not because the agent can't be trusted. Because you should always know exactly what "done" changed before you sign off on it.
 
 ---
 
-## 6. Running Programs
+## Node 6: Actually Running Programs
 
-At some point, development is just running commands.
+At some point, development just comes down to running a command and watching what it does.
 
 JavaScript: `node app.js`, `npm run dev`
 
 Python: `python app.py`
 
-Other stacks have their own version of the same idea:
+Every other ecosystem rhymes with these: `cargo run`, `go run .`, `dotnet run`
 
-`cargo run` · `go run .` · `dotnet run`
-
-You don't need to memorize all of them. You need to understand that your IDE's "Run" button is usually just a shortcut for exactly this.
+You don't need to memorize the full list. You just need to recognize that your IDE's "Run" button is a shortcut for one of these.
 
 ---
 
-## 7. Package Managers
+## Node 7: Package Managers, or How Dependencies Join the Graph
 
-Know the package manager for whatever ecosystem you're in.
+**JavaScript**: `npm install`, `npm install package-name`, `npm run dev` (you'll also run into `pnpm` and `yarn`)
 
-**JavaScript**
+**Python**: `pip install package`, and increasingly, `uv`
 
-`npm install` · `npm install package-name` · `npm run dev`
-
-You'll also run into `pnpm` and `yarn`.
-
-**Python**
-
-`pip install package`, and increasingly, `uv`
-
-Across all of them, understand:
-
-- dependencies
-- lockfiles
-- version pinning
-- global vs. project-level installs
+Whichever one you're using, the same underlying ideas apply: dependencies, lockfiles, version pinning, and the difference between a global install and a project-scoped one.
 
 ---
 
-## 8. Processes
+## Node 8: Processes, or What Happens the Moment You Hit Enter
 
-Anything you launch from the terminal becomes a **process**.
+Launch something from a terminal and it becomes a **process**, a living thing with its own lifecycle, not just a line of text that fired once and disappeared.
 
 | Command | What it does |
 | --- | --- |
@@ -186,23 +147,17 @@ Anything you launch from the terminal becomes a **process**.
 | `ps aux` | List them with full detail |
 | `top` | Watch processes live |
 | `kill PID` | Ask a process to stop |
-| `kill -9 PID` | Force it to stop |
+| `kill -9 PID` | Force it to stop immediately |
 
-And the shortcut you'll use more than any of these:
-
-`Ctrl + C` — stops whatever's currently running in your terminal.
+And the edge you'll cross more than any other: `Ctrl + C`, which stops whatever's currently running in front of you.
 
 ---
 
-## 9. Environment Variables
+## Node 9: Environment Variables, or Config Without Hardcoding
 
-You'll run into these constantly.
+`export API_KEY="..."` lets your application read a value at runtime instead of baking it directly into the source code.
 
-`export API_KEY="..."`
-
-That lets your app read a value at runtime instead of hardcoding it into your source.
-
-You'll also live in `.env` files, which usually look like:
+You'll spend a lot of time in `.env` files for exactly this, usually shaped like:
 
 ```
 DATABASE_URL=...
@@ -210,127 +165,118 @@ API_KEY=...
 PORT=3000
 ```
 
-### ⚠️ Keep secrets out of Git
+### The node guarding your secrets
 
-That's exactly why `.gitignore` almost always has a line for `.env`. Don't be the reason it doesn't.
+This is exactly why `.gitignore` almost always excludes `.env`. One careless commit and a secret is part of your public history forever. Check what you're staging before you run `git add .`.
 
 ---
 
-## 10. Permissions
+## Node 10: Permissions, or Who's Allowed to Do What
 
-On Unix-like systems, every file carries permissions.
+Every file on a Unix-like system carries permissions: who can read it, write it, or run it.
 
 `chmod +x script.sh` makes a script executable.
 
-`sudo` runs a command with elevated privileges.
+`sudo` runs a command with elevated privileges, effectively as root.
 
-### ⚠️ Don't rubber-stamp `sudo`
+### Don't cross this edge without looking
 
-If a tutorial, a Stack Overflow answer, or an AI agent tells you to slap `sudo` in front of something, stop and understand *why* it needs that power before you grant it.
-
----
-
-## 11. SSH
-
-SSH is how you securely reach into another machine from your terminal.
-
-`ssh user@server`
-
-Once you're in, you're working in that machine's shell as if you were sitting at it.
-
-You'll lean on this constantly for servers, cloud infrastructure, remote dev environments, and VMs.
+If a tutorial, a forum post, or an agent tells you to slap `sudo` in front of something, pause before you comply. Understand exactly why it needs that level of access first. This is the one node in the whole graph capable of affecting more than just your project.
 
 ---
 
-## 12. Command History & Speed
+## Node 11: SSH, Extending the Graph Beyond Your Own Machine
 
-You shouldn't be retyping commands all day.
+`ssh user@server` reaches securely into another computer and drops you straight into its shell, as if you were sitting in front of it.
 
-`↑ / ↓` — cycle through past commands
-
-`Ctrl + R` — search your history
-
-`Tab` — autocomplete commands and paths
-
-`history` — list everything you've run
-
-Small habits, big speed difference.
+This is how the graph stretches past your laptop, into servers, cloud infrastructure, remote dev environments, and virtual machines.
 
 ---
 
-# 🧠 Concepts Beat Command Memorization
+## Node 12: Moving Faster Through the Graph
 
-Don't try to cram 100 commands into your head. Understand these ideas instead:
+`↑ / ↓`: cycle through past commands
 
-**Files & directories** — how your filesystem is actually organized
+`Ctrl + R`: search your history
 
-**Paths** — relative vs. absolute
+`Tab`: autocomplete commands and paths
 
-**Processes** — programs are things that start, run, and stop
+`history`: list everything you've run
 
-**Environment variables** — how config and secrets reach your app without living in your code
-
-**Permissions** — who's allowed to read, write, or execute what
-
-**Standard input/output** — commands take input and produce output
-
-**Pipes** — chaining commands together instead of one command doing it all
-
-**Exit codes** — every command reports back whether it worked
-
-**Git** — inspecting, staging, committing, reverting, syncing
+None of these teach you anything new. They just cut down how much time you spend retyping what you already know.
 
 ---
 
-# 🤖 Why This Matters More Because of AI Agents
+# 🧠 The Graph Underneath the Commands
 
-Tools like Claude Code and Codex can now:
+Memorizing a hundred individual commands is the wrong target. Understanding the handful of concepts that connect all of them is the real one:
 
-- explore your repo
-- read and edit files
-- search your codebase
-- install dependencies
-- run builds and tests
-- execute git commands
-- spin up dev servers
-- drive other CLI tools
+**Files & directories**: how your filesystem is actually organized
 
-You don't have to type every one of those commands by hand anymore.
+**Paths**: relative versus absolute, and which one you're using right now
 
-But you still need to **understand what's happening when the agent does.**
+**Processes**: programs as things that start, run, and stop
 
-If it wants to run `rm -rf ...` — you should know exactly why that's a red flag.
+**Environment variables**: how config and secrets reach an app without living inside its code
 
-If it just touched 14 files — you should know to run `git diff` before you trust it.
+**Permissions**: who's allowed to read, write, or execute what
 
-If your server won't die — you should understand processes.
+**Standard input/output**: every command takes input and produces output
 
-If your app can't find an API key — you should understand environment variables.
+**Pipes**: chaining small tools together instead of leaning on one giant one
 
-If something fails with a permissions error — you should know what that actually means.
+**Exit codes**: every command reports back whether it actually worked
 
-AI shrinks how much syntax you need to memorize. It doesn't shrink how much you need to understand your own environment. If anything, it raises the bar — because now you're not just running the commands, you're auditing them.
+**Git**: inspecting, staging, committing, reverting, syncing
+
+Learn these nine well, and any new command you run into will slot neatly into a spot you already understand.
 
 ---
 
-# ✅ If You're Starting From Zero
+# 🤖 Why This Graph Matters More With an Agent at the Wheel
 
-Learn these first:
+Here's the part that changed things for me. Agents like Claude Code and Codex can now explore a repo on their own, read and edit files, search a codebase, install dependencies, run builds and tests, execute git commands, spin up dev servers, and drive other CLI tools.
 
-`pwd` · `ls` · `cd` · `mkdir` · `touch` · `cp` · `mv` · `rm` · `cat` · `grep` / `rg` · `find` · `clear`
+It's a genuinely fun way to build. Watching a feature come together in minutes instead of hours doesn't get old fast. But fun and careless aren't the same thing, and the gap between them is exactly this knowledge graph.
+
+If an agent wants to run `rm -rf ...`, you should already know why that deserves a second look.
+
+If it just touched fourteen files, `git diff` is how you find out what "done" actually means before you trust it.
+
+If a server won't die, that's a processes question, not a mystery.
+
+If an app can't find an API key, that's an environment variable, not a bug.
+
+If something fails on permissions, you should know exactly what just got blocked and why.
+
+Agents cut down how much syntax you need to type. They don't cut down how much you need to understand. If anything, they raise the bar, because now you're not just typing the commands, you're auditing them.
+
+---
+
+# The Starting Nodes, If You're New to All This
+
+Wire these in first:
+
+`pwd`, `ls`, `cd`, `mkdir`, `touch`, `cp`, `mv`, `rm`, `cat`, `grep` / `rg`, `find`, `clear`
 
 Then:
 
-`git status` · `git diff` · `git add` · `git commit` · `git pull` · `git push`
+`git status`, `git diff`, `git add`, `git commit`, `git pull`, `git push`
 
-Then understand:
+Then understand, don't just memorize:
 
-`|` · `>` · `>>` · `Ctrl + C` · environment variables · paths · processes · permissions
+`|`, `>`, `>>`, `Ctrl + C`, environment variables, paths, processes, permissions
 
-You don't need to memorize every line on this page. You need to know what these tools *can* do, understand the concepts underneath them, and look up the exact syntax when you actually need it.
+You're not going to remember every line on this page, and that's fine. What you need is the shape of the graph, what connects to what, so you can look up the exact syntax the moment you need it, and recognize when to pump the brakes on something an agent is about to run for you.
 
-That's enough to be genuinely comfortable in a terminal — and far better equipped to work alongside AI coding agents instead of just watching them work.
+That's the real difference between watching an agent build your project and actually building it alongside one.
 
 ---
 
-*Part of a weekly resource drop — new sheet every week. Follow along or check back for updates.*
+## How This Actually Gets Made
+
+Quick note on process, since it matters to me that this is honest: the research, the opinions, and the way I want to explain things are mine. I use Claude and Codex to help me get those ideas onto the page more clearly, and I'll be leaning on Claude specifically to push most of these updates to GitHub each week, since that part of the workflow is what used to slow me down. The thinking behind every resource here is my own.
+
+---
+
+*Node one of a weekly series. A new piece of the graph drops every week.*
