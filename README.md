@@ -2,6 +2,12 @@
 
 ### Every command is a node. Learn how they connect, and the terminal stops being a black box.
 
+## How This Actually Gets Made
+
+Quick note on process, since it matters to me that this is honest: the research, the opinions, and the way I want to explain things are mine. I use Claude and Codex to help me get those ideas onto the page more clearly, and I'll be leaning on Claude specifically to push most of these updates to GitHub each week, since that part of the workflow is what used to slow me down. The thinking behind every resource here is my own.
+
+---
+
 I'm done calling these "cheat sheets." Cheating means skipping past the understanding, and that's the opposite of what this is. Think of it as a graph instead: a web of connected ideas where `pwd` leads you to paths, paths lead you to processes, processes lead you to permissions, and permissions are what stop you from doing something you'll regret at 1am.
 
 Building with an AI agent in the driver's seat is genuinely fun. It's fast, it feels a little like magic, and sooner or later it's going to try to run a command you don't fully understand. None of that is a problem. The fun and the "know what you're doing" part work together, not against each other. The second one is what makes the first one safe.
@@ -270,12 +276,6 @@ Then understand, don't just memorize:
 You're not going to remember every line on this page, and that's fine. What you need is the shape of the graph, what connects to what, so you can look up the exact syntax the moment you need it, and recognize when to pump the brakes on something an agent is about to run for you.
 
 That's the real difference between watching an agent build your project and actually building it alongside one.
-
----
-
-## How This Actually Gets Made
-
-Quick note on process, since it matters to me that this is honest: the research, the opinions, and the way I want to explain things are mine. I use Claude and Codex to help me get those ideas onto the page more clearly, and I'll be leaning on Claude specifically to push most of these updates to GitHub each week, since that part of the workflow is what used to slow me down. The thinking behind every resource here is my own.
 
 ---
 
